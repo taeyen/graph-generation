@@ -239,12 +239,12 @@ class LSTM_plain(nn.Module):
 
         for name, param in self.rnn.named_parameters():
             if 'bias' in name:
-                nn.init.constant(param, 0.25)
+                nn.init.constant_(param, 0.25)
             elif 'weight' in name:
-                nn.init.xavier_uniform(param,gain=nn.init.calculate_gain('sigmoid'))
+                nn.init.xavier_uniform_(param,gain=nn.init.calculate_gain('sigmoid'))
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def init_hidden(self, batch_size):
         return (Variable(torch.zeros(self.num_layers, batch_size, self.hidden_size)).cuda(),
@@ -294,12 +294,12 @@ class GRU_plain(nn.Module):
 
         for name, param in self.rnn.named_parameters():
             if 'bias' in name:
-                nn.init.constant(param, 0.25)
+                nn.init.constant__(param, 0.25)
             elif 'weight' in name:
-                nn.init.xavier_uniform(param,gain=nn.init.calculate_gain('sigmoid'))
+                nn.init.xavier_uniform_(param,gain=nn.init.calculate_gain('sigmoid'))
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def init_hidden(self, batch_size):
         return Variable(torch.zeros(self.num_layers, batch_size, self.hidden_size)).cuda()
@@ -334,7 +334,7 @@ class MLP_plain(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def forward(self, h):
         y = self.deterministic_output(h)
@@ -357,7 +357,7 @@ class MLP_token_plain(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def forward(self, h):
         y = self.deterministic_output(h)
@@ -377,7 +377,7 @@ class MLP_VAE_plain(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def forward(self, h):
         # encoder
@@ -406,7 +406,7 @@ class MLP_VAE_conditional_plain(nn.Module):
 
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def forward(self, h):
         # encoder
@@ -606,11 +606,11 @@ class Graph_RNN_structure(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Linear):
                 # print('linear')
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
                 # print(m.weight.data.size())
             if isinstance(m, nn.Conv1d):
                 # print('conv1d')
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
                 # print(m.weight.data.size())
             if isinstance(m, nn.BatchNorm1d):
                 # print('batchnorm1d')
@@ -619,9 +619,9 @@ class Graph_RNN_structure(nn.Module):
                 # print(m.weight.data.size())
             if isinstance(m, nn.GRU):
                 # print('gru')
-                m.weight_ih_l0.data = init.xavier_uniform(m.weight_ih_l0.data,
+                m.weight_ih_l0.data = init.xavier_uniform_(m.weight_ih_l0.data,
                                                                   gain=nn.init.calculate_gain('sigmoid'))
-                m.weight_hh_l0.data = init.xavier_uniform(m.weight_hh_l0.data,
+                m.weight_hh_l0.data = init.xavier_uniform_(m.weight_hh_l0.data,
                                                                   gain=nn.init.calculate_gain('sigmoid'))
                 m.bias_ih_l0.data = torch.ones(m.bias_ih_l0.data.size(0)) * 0.25
                 m.bias_hh_l0.data = torch.ones(m.bias_hh_l0.data.size(0)) * 0.25
@@ -760,13 +760,13 @@ class Graph_generator_LSTM(nn.Module):
         # self.hidden,self.cell = self.init_hidden()
         self.hidden = self.init_hidden()
 
-        self.lstm.weight_ih_l0.data = init.xavier_uniform(self.lstm.weight_ih_l0.data, gain=nn.init.calculate_gain('sigmoid'))
-        self.lstm.weight_hh_l0.data = init.xavier_uniform(self.lstm.weight_hh_l0.data, gain=nn.init.calculate_gain('sigmoid'))
+        self.lstm.weight_ih_l0.data = init.xavier_uniform_(self.lstm.weight_ih_l0.data, gain=nn.init.calculate_gain('sigmoid'))
+        self.lstm.weight_hh_l0.data = init.xavier_uniform_(self.lstm.weight_hh_l0.data, gain=nn.init.calculate_gain('sigmoid'))
         self.lstm.bias_ih_l0.data = torch.ones(self.lstm.bias_ih_l0.data.size(0))*0.25
         self.lstm.bias_hh_l0.data = torch.ones(self.lstm.bias_hh_l0.data.size(0))*0.25
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data,gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data,gain=nn.init.calculate_gain('relu'))
     def init_hidden(self):
         return (Variable(torch.zeros(self.num_layers,self.batch_size, self.hidden_size)).cuda(), Variable(torch.zeros(self.num_layers,self.batch_size, self.hidden_size)).cuda())
 
@@ -847,7 +847,7 @@ class GCN_encoder(nn.Module):
         self.relu = nn.ReLU()
         for m in self.modules():
             if isinstance(m, GraphConv):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
                 # init_range = np.sqrt(6.0 / (m.input_dim + m.output_dim))
                 # m.weight.data = torch.rand([m.input_dim, m.output_dim]).cuda()*init_range
                 # print('find!')
@@ -890,7 +890,7 @@ class GCN_encoder_graph(nn.Module):
         self.act = nn.ReLU()
         for m in self.modules():
             if isinstance(m, GraphConv):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
                 # init_range = np.sqrt(6.0 / (m.input_dim + m.output_dim))
                 # m.weight.data = torch.rand([m.input_dim, m.output_dim]).cuda()*init_range
                 # print('find!')
@@ -954,7 +954,7 @@ class GCN_generator(nn.Module):
         # initialize
         for m in self.modules():
             if isinstance(m, GraphConv):
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
 
     def forward(self,x,teacher_force=False,adj_real=None):
         # x: batch * node_num * feature
@@ -1075,7 +1075,7 @@ class CNN_decoder(nn.Module):
             if isinstance(m, nn.ConvTranspose1d):
                 # n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 # m.weight.dataset.normal_(0, math.sqrt(2. / n))
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
             elif isinstance(m, nn.BatchNorm1d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
@@ -1167,7 +1167,7 @@ class CNN_decoder_share(nn.Module):
             if isinstance(m, nn.ConvTranspose1d):
                 # n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 # m.weight.dataset.normal_(0, math.sqrt(2. / n))
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
             elif isinstance(m, nn.BatchNorm1d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
@@ -1246,7 +1246,7 @@ class CNN_decoder_attention(nn.Module):
             if isinstance(m, nn.ConvTranspose1d):
                 # n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 # m.weight.dataset.normal_(0, math.sqrt(2. / n))
-                m.weight.data = init.xavier_uniform(m.weight.data, gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data, gain=nn.init.calculate_gain('relu'))
             elif isinstance(m, nn.BatchNorm1d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
@@ -1374,7 +1374,7 @@ class Graphsage_Encoder(nn.Module):
         self.relu = nn.ReLU()
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                m.weight.data = init.xavier_uniform(m.weight.data,gain=nn.init.calculate_gain('relu'))
+                m.weight.data = init.xavier_uniform_(m.weight.data,gain=nn.init.calculate_gain('relu'))
             elif isinstance(m, nn.BatchNorm1d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
@@ -1494,7 +1494,3 @@ class Graphsage_Encoder(nn.Module):
         nodes_features = nodes_features.view(-1,nodes_features.size(2),nodes_features.size(1))
         # print(nodes_features.size())
         return(nodes_features)
-
-
-
-
