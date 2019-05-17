@@ -101,7 +101,7 @@ def train_vae_epoch(epoch, args, rnn, output, data_loader,
         log_value('z_sgm_min_'+args.fname, z_sgm_min, epoch*args.batch_ratio + batch_idx)
         log_value('z_sgm_max_'+args.fname, z_sgm_max, epoch*args.batch_ratio + batch_idx)
 
-        loss_sum += loss.data[0]
+        loss_sum += loss.item()
     return loss_sum/(batch_idx+1)
 
 def test_vae_epoch(epoch, args, rnn, output, test_batch_size=16, save_histogram=False, sample_time = 1):
@@ -221,12 +221,12 @@ def train_mlp_epoch(epoch, args, rnn, output, data_loader,
 
         if epoch % args.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
-                epoch, args.epochs,loss.data[0], args.graph_type, args.num_layers, args.hidden_size_rnn))
+                epoch, args.epochs,loss.item(), args.graph_type, args.num_layers, args.hidden_size_rnn))
 
         # logging
-        log_value('loss_'+args.fname, loss.data[0], epoch*args.batch_ratio+batch_idx)
+        log_value('loss_'+args.fname, loss.item(), epoch*args.batch_ratio+batch_idx)
 
-        loss_sum += loss.data[0]
+        loss_sum += loss.item()
     return loss_sum/(batch_idx+1)
 
 
@@ -378,12 +378,12 @@ def train_mlp_forward_epoch(epoch, args, rnn, output, data_loader):
 
         if epoch % args.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
-                epoch, args.epochs,loss.data[0], args.graph_type, args.num_layers, args.hidden_size_rnn))
+                epoch, args.epochs,loss.item(), args.graph_type, args.num_layers, args.hidden_size_rnn))
 
         # logging
-        log_value('loss_'+args.fname, loss.data[0], epoch*args.batch_ratio+batch_idx)
+        log_value('loss_'+args.fname, loss.item(), epoch*args.batch_ratio+batch_idx)
 
-        loss_sum += loss.data[0]
+        loss_sum += loss.item()
     return loss_sum/(batch_idx+1)
 
 
@@ -510,12 +510,12 @@ def train_rnn_epoch(epoch, args, rnn, output, data_loader,
 
         if epoch % args.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
-                epoch, args.epochs,loss.data[0], args.graph_type, args.num_layers, args.hidden_size_rnn))
+                epoch, args.epochs,loss.item(), args.graph_type, args.num_layers, args.hidden_size_rnn))
 
         # logging
-        log_value('loss_'+args.fname, loss.data[0], epoch*args.batch_ratio+batch_idx)
+        log_value('loss_'+args.fname, loss.item(), epoch*args.batch_ratio+batch_idx)
         feature_dim = y.size(1)*y.size(2)
-        loss_sum += loss.data[0]*feature_dim
+        loss_sum += loss.item()*feature_dim
     return loss_sum/(batch_idx+1)
 
 
@@ -631,13 +631,13 @@ def train_rnn_forward_epoch(epoch, args, rnn, output, data_loader):
 
         if epoch % args.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
-                epoch, args.epochs,loss.data[0], args.graph_type, args.num_layers, args.hidden_size_rnn))
+                epoch, args.epochs,loss.item(), args.graph_type, args.num_layers, args.hidden_size_rnn))
 
         # logging
-        log_value('loss_'+args.fname, loss.data[0], epoch*args.batch_ratio+batch_idx)
+        log_value('loss_'+args.fname, loss.item(), epoch*args.batch_ratio+batch_idx)
         # print(y_pred.size())
         feature_dim = y_pred.size(0)*y_pred.size(1)
-        loss_sum += loss.data[0]*feature_dim/y.size(0)
+        loss_sum += loss.item()*feature_dim/y.size(0)
     return loss_sum/(batch_idx+1)
 
 
